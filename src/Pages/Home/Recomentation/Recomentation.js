@@ -20,12 +20,12 @@ const Recomentation = () => {
     return (
         <section className='mb-12'>
             <SectionTitle
-            heading="From Our Menu"
-            Subheading="Popular Items"
+            heading="CHEF RECOMMENDS"
+            Subheading="Should Try"
             >
 
             </SectionTitle>
-            <div className=' w-100 grid md:grid-cols-2 gap-10 mb-4'>
+            <div className=' grid md:grid-cols-2 gap-10 mb-4'>
                 {
                     Offered.map(item=> <OfferedItem
                     key={item._id}
