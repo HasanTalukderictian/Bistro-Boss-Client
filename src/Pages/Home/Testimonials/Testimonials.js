@@ -8,6 +8,8 @@ import 'swiper/css';
 import { Rating } from '@smastrom/react-rating'
 
 import '@smastrom/react-rating/style.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 
 
@@ -41,11 +43,11 @@ const Testimonials = () => {
                         key={review._id}
                         review={review}>
                         <div className=' flex flex-col items-center mx-24 my-16'>
-                            
-                            <Rating style={{ maxWidth: 250 }} value={review.rating} readOnly />
 
-                            <p>{review.details}</p>
-                            <h3 className='text-2xl text-orange-400'> {review.name}</h3>
+                            <Rating style={{ maxWidth: 250 }} value={review.rating} readOnly />
+                           <p> <FontAwesomeIcon className='bg-orange-800 ' icon="fa-solid fa-quote-left" /></p>
+                            <p className='mt-4'>{review.details}</p>
+                            <h3 className='text-2xl text-orange-400 mb-2'> {review.name}</h3>
                         </div>
 
                     </SwiperSlide>)
