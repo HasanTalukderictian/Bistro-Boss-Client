@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SectionTitle from '../../../Components/SectionTitle/SectionTitle';
-import MenuItems from '../../Shared/MenuItems/MenuItems';
+
 import OfferedItem from '../../Shared/OfferedItem/OfferedItem';
 
 const Recomentation = () => {
