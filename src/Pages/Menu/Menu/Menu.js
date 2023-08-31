@@ -43,38 +43,27 @@ const Menu = () => {
                 {/* desserts items */}
 
                 <MenuCategory
-                items={desserts}
-                title="Desserts"
-                details ="Lorem Ipsum has been the industry’s 
+                items={desserts} title="desserts" details ="Lorem Ipsum has been the industry’s 
                 standard dummy text ever since the 1500s, when an unknown printer took
                  a galley of type and scrambled it to make a type specimen book."
                 img={dessertImg}
                 ></MenuCategory>
       
               {/* Pizza items */}
-              <MenuCategory
-              items={pizza}
-              title={"Pizza"}
-              details ="Lorem Ipsum has been the industry’s 
+              <MenuCategory items={pizza} title={"pizza"} details ="Lorem Ipsum has been the industry’s 
                 standard dummy text ever since the 1500s, when an unknown printer took
                  a galley of type and scrambled it to make a type specimen book."
               img={pizzaImg}>
 
               </MenuCategory>
-              <MenuCategory
-              items={salad}
-              title={"Salad"}
-              details ="Lorem Ipsum has been the industry’s 
+              <MenuCategory items={salad} title={"salad"} details ="Lorem Ipsum has been the industry’s 
                 standard dummy text ever since the 1500s, when an unknown printer took
                  a galley of type and scrambled it to make a type specimen book."
               img={salaImg}>
 
               </MenuCategory>
 
-              <MenuCategory
-              items={soup}
-              title={"Soup"}
-              details ="Lorem Ipsum has been the industry’s 
+              <MenuCategory items={soup} title={"soup"} details ="Lorem Ipsum has been the industry’s 
                 standard dummy text ever since the 1500s, when an unknown printer took
                  a galley of type and scrambled it to make a type specimen book."
               img={soupImg}>
