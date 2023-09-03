@@ -11,6 +11,8 @@ import Login from "../Pages/Login/Login";
 import SignUp from "../SignUp/SignUp";
 import PrivateRoutes from "./PrivateRoutes";
 import Secret from "../Pages/Shared/Secret/Secret";
+import DashBoard from "../Layout/DashBoard";
+import MyCart from "../Pages/DashBoard/MyCart";
   
   
   
@@ -44,6 +46,16 @@ import Secret from "../Pages/Shared/Secret/Secret";
          path:'secret',
          element:<PrivateRoutes> <Secret></Secret> </PrivateRoutes>
         }
-      ]
+      ],
     },
+    {
+      path:'dashboard',
+      element:<DashBoard></DashBoard>,
+      children: [
+        {
+          path:'mycart',
+          element:<MyCart></MyCart>
+        }
+      ]
+    }
   ]);
