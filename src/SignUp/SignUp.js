@@ -5,51 +5,71 @@ import { useForm } from 'react-hook-form';
 import { AuthContext } from '../Providers/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialLogin from '../Pages/Shared/SocialLogin/SocialLogin';
 
 
 const SignUp = () => {
 
     const { register, handleSubmit, reset,
-         formState: { errors } } = useForm();
+        formState: { errors } } = useForm();
 
-    const {createUser,updateUserProfile} = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
     const onSubmit = (data) => {
 
-        console.log(data);
+
         const email = data.email;
         const password = data.password;
-        createUser(email,password)
-        .then(result => {
-            const loggedUser = result.user;
-            console.log(loggedUser);
-            updateUserProfile(data.name, data.photoURL)
-            .then(() =>{
-               console.log('user profile info  Updated');
-               reset();
-               Swal.fire({
-                title: 'User Create Successfully',
-                showClass: {
-                  popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                  popup: 'animate__animated animate__fadeOutUp'
-                }
-              });
-              navigate('/');
+        createUser(email, password)
+            .then(result => {
+                const loggedUser = result.user;
+
+            
+
+                updateUserProfile(data.name, data.photoURL)
+
+                    .then(() => {
+
+                        const saveUser = {name: data.name, email: data.email}
+
+                        fetch(`http://localhost:5000/users`, {
+                            method:'POST',
+                            headers: {
+                                'content-type' : 'application/json'
+                            },
+                            body: JSON.stringify(saveUser)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.insertedId) {
+                                    reset();
+                                    Swal.fire({
+                                        title: 'User Create Successfully',
+                                        showClass: {
+                                            popup: 'animate__animated animate__fadeInDown'
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__fadeOutUp'
+                                        }
+                                    });
+                                    navigate('/');
+                                }
+                            })
+
+
+                    })
+                    .catch(error => console.log(error))
             })
-            .catch(error => console.log(error))
-        })
-       
+
     }
 
 
 
     return (
         <>
-          <Helmet>
+            <Helmet>
                 <title>Bistro Boss | Sign Up</title>
             </Helmet>
             <div className="hero min-h-screen bg-base-200">
@@ -73,7 +93,7 @@ const SignUp = () => {
                                 <label className="label">
                                     <span className="label-text">Photo URL</span>
                                 </label>
-                                <input type="text"  {...register("photoURL", { required: true })}  placeholder="PhotoURL" className="input input-bordered"
+                                <input type="text"  {...register("photoURL", { required: true })} placeholder="PhotoURL" className="input input-bordered"
                                 />
                                 {errors.photoURL && <span className='text-red-600'>Photo URL  is required</span>}
 
@@ -118,6 +138,7 @@ const SignUp = () => {
                             </div>
                         </form>
                         <p className='text-center'>Al ready Have an Account? <Link to="/login">Login</Link></p>
+                        <SocialLogin></SocialLogin>
                     </div>
                 </div>
             </div>
