@@ -1,13 +1,15 @@
 import React from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import {  NavLink, Outlet } from 'react-router-dom';
 import { FaShoppingCart, FaWallet, FaCalendar, FaHome,FaUtensils, FaBook, FaUsers,FaList } from 'react-icons/fa';
 import useCart from '../hooks/useCart';
+import useAdmin from '../hooks/useAdmin';
 // import '../App.css';
 
 const DashBoard = () => {
 
     const [cart] = useCart();
     const isAdmin = true;
+    // const [isAdmin] =useAdmin();
 
     return (
         <div className="drawer lg:drawer-open ">
