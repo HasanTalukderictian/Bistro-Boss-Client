@@ -1,51 +1,51 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
+import { FaTrashAlt, FaUserShield } from "react-icons/fa";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import { FaTrash, FaUserShield } from 'react-icons/fa';
-import Swal from 'sweetalert2';
+
+
 
 const AllUsers = () => {
-
+    const [axiosSecure] = useAxiosSecure();
     const { data: users = [], refetch } = useQuery(['users'], async () => {
-        const res = await fetch('http://localhost:5000/users')
-        return res.json()
+        const res = await axiosSecure.get('/users')
+        return res.data;
     })
 
-    const handleDelete =user =>{
-
-    }
-
     const handleMakeAdmin = user =>{
-          fetch(`http://localhost:5000/users/admin/${user._id}`,{
-            method: 'PATCH',
-            
-          })
-          .then(res => res.json())
-          .then(data => {
-            if(data.modifiedCount> 0){
+        fetch(`http://localhost:5000/users/admin/${user._id}`, {
+            method: 'PATCH'
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if(data.modifiedCount){
                 refetch();
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: `${user.name}: is admin Now!`,
+                    title: `${user.name} is an Admin Now!`,
                     showConfirmButton: false,
                     timer: 1500
                   })
             }
-          })
+        })
+    }
+
+    const handleDelete = user => {
+
     }
 
     return (
-        <div className='w-full'>
-
+        <div className="w-full">
             <Helmet>
-                <title>Bistro Boss | All Users</title>
+                <title>Bistro Boss | All users</title>
             </Helmet>
-
-            <h3 className="text-3xl font-semibold my-4">Total Users :{users.length}</h3>
-
+            <h3 className="text-3xl font-semibold my-4">Total Users: {users.length}</h3>
             <div className="overflow-x-auto">
-                <table className="table table-zebra">
+                <table className="table table-zebra w-full">
                     {/* head */}
                     <thead>
                         <tr>
@@ -57,24 +57,19 @@ const AllUsers = () => {
                         </tr>
                     </thead>
                     <tbody>
-                       
-                       {
-                         users.map((user, index) =>  <tr 
-                         key={user._id}
-                         >
-                            <th>{index + 1}</th>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-
-                            <td>{
-                             user.role ==='admin'? 'admin' :  <button onClick={()=>handleMakeAdmin(user)} className="btn btn-ghost btn-lg bg-orange-500 text-white"><FaUserShield></FaUserShield></button>
-                            }</td>
-
-                            <td><button onClick={()=>handleDelete(user)} className="btn btn-ghost btn-lg bg-red-400 text-white"><FaTrash></FaTrash></button></td>
-                        </tr>
-    )
-                       }
-                       
+                        {
+                            users.map((user, index) => <tr key={user._id}>
+                                <th>{index + 1}</th>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{ user.role === 'admin' ? 'admin' :
+                                    <button onClick={() => handleMakeAdmin(user)} className="btn btn-ghost bg-orange-600  text-white"><FaUserShield></FaUserShield></button> 
+                                    }</td>
+                                <td><button onClick={() => handleDelete(user)} className="btn btn-ghost bg-red-600  text-white"><FaTrashAlt></FaTrashAlt></button></td>
+                            </tr>)
+                        }
+                        
+                        
                     </tbody>
                 </table>
             </div>
@@ -83,3 +78,5 @@ const AllUsers = () => {
 };
 
 export default AllUsers;
+
+
