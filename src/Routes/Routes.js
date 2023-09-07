@@ -14,6 +14,8 @@ import Secret from "../Pages/Shared/Secret/Secret";
 import DashBoard from "../Layout/DashBoard";
 import MyCart from "../Pages/DashBoard/MyCart";
 import AllUsers from "../Layout/All users/AllUsers";
+import AddItem from "../Pages/DashBoard/AddItem/AddItem";
+import AdminRoute from "./AdminRoutes";
   
   
   
@@ -60,6 +62,9 @@ import AllUsers from "../Layout/All users/AllUsers";
         {
           path:'allusers',
           element:<AllUsers></AllUsers>
+        },{
+          path:'addItem',
+          element:<AdminRoute><AddItem></AddItem></AdminRoute>
         }
       ]
     }
