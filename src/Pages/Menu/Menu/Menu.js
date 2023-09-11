@@ -19,6 +19,8 @@ const Menu = () => {
     const pizza = menu.filter(item => item.category === "pizza");
     const salad = menu.filter(item => item.category === "salad");
     const offered = menu.filter(item => item.category === "offered");
+  
+
 
     return (
         <div>
@@ -69,6 +71,10 @@ const Menu = () => {
               img={soupImg}>
 
               </MenuCategory>
+
+
+              
+
               
               
               

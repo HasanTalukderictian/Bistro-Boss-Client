@@ -19,7 +19,7 @@ const useMenu =() =>{
         queryKey:['menu'],
         queryFn: async() =>{
             const res = await fetch("http://localhost:5000/menu")
-            return res.json()
+            return res.json();
         }
     })
 

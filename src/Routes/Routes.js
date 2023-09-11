@@ -17,6 +17,7 @@ import AllUsers from "../Layout/All users/AllUsers";
 import AddItem from "../Pages/DashBoard/AddItem/AddItem";
 import AdminRoute from "./AdminRoutes";
 import ManageItems from "../Pages/DashBoard/ManageItems/ManageItems";
+import Payment from "../Pages/DashBoard/Payment/Payment";
   
   
   
@@ -60,9 +61,15 @@ import ManageItems from "../Pages/DashBoard/ManageItems/ManageItems";
           path:'mycart',
           element:<MyCart></MyCart>
         },
+
+        {
+          path:'payment',
+          element:<Payment></Payment>
+        },
+        // admin routes,
         {
           path:'allusers',
-          element:<AllUsers></AllUsers>
+          element:<AdminRoute><AllUsers></AllUsers></AdminRoute>
         },{
           path:'addItem',
           element:<AdminRoute><AddItem></AddItem></AdminRoute>
