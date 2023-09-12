@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {loadStripe} from '@stripe/stripe-js';
 
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
@@ -35,17 +34,15 @@ const CheckoutForm = () => {
 
     if (error) {
       console.log('[error]', error);
-      setCardError(error.message);
-
+      setCardError(error.message)
     } else {
         setCardError('');
-        
-
+      console.log('[PaymentMethod]', paymentMethod);
     }
   };
 
   return (
-   <>
+  <>
     <form onSubmit={handleSubmit}>
       <CardElement
         options={{
@@ -63,16 +60,18 @@ const CheckoutForm = () => {
           },
         }}
       />
-      <button className="btn btn-outline btn-secondary btn-sm mt-4" type="submit" disabled={!stripe}>
+      <button type="submit" className="btn btn-outline btn-secondary btn-sm mt-4"  disabled={!stripe}>
         Pay
       </button>
     </form>
     <p className='text-red-700'>{cardError}</p>
-   </>
+  </>
   );
 };
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-
 export default CheckoutForm;
+
+
+
+
+
