@@ -7,10 +7,11 @@ import { Link } from 'react-router-dom';
 
 const MyCart = () => {
     const [cart, refetch] = useCart();
-    console.log(cart);
+    // console.log(cart);
 
     // How Does reduce work!!!!
     const total = cart.reduce((sum, item) => item.price + sum, 0)
+    const  totalamount = parseFloat(total).toFixed(2)
 
     const handleDelete = item =>{
         Swal.fire({
@@ -51,7 +52,7 @@ const MyCart = () => {
 
             <div className='uppercase font-semibold flex justify-evenly h-10 items-center'>
                 <h3 className="text-3xl"> Total items: {cart.length}</h3>
-                <h3 className="text-3xl"> Total price: ${total}</h3>
+                <h3 className="text-3xl"> Total price:  ${totalamount}</h3>
                  <Link to="/dashboard/payment"> 
                  <button className="btn btn-warning btn-sm">Pay</button>
                  </Link>

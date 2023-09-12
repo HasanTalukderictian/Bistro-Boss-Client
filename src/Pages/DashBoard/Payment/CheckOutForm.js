@@ -1,25 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ price }) => {
+
   const stripe = useStripe();
   const elements = useElements();
   const [cardError, setCardError] = useState('');
+  const [axiosSecure] = useAxiosSecure();
+  const {user} = useAuth();
+  const [clientSecret, setClientSceret] = useState('');
+
+
+  useEffect(()=>{
+       
+    axiosSecure.post('/create-payment-intent', {price})
+    .then(res => {
+        console.log(res.data.clientSecret);
+        setClientSceret(res.data.clientSecret);
+    })
+
+  },[price, axiosSecure])
 
   const handleSubmit = async (event) => {
-    // Block native form submission.
+   
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
+    
       return;
     }
 
-    // Get a reference to a mounted CardElement. Elements knows how
-    // to find your CardElement because there can only ever be one of
-    // each type of element.
+   
     const card = elements.getElement(CardElement);
 
     if (card == null) {
@@ -39,6 +53,21 @@ const CheckoutForm = () => {
         setCardError('');
       console.log('[PaymentMethod]', paymentMethod);
     }
+    
+   const {paymentIntent, error:confirmError} = stripe .confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: card,
+      billing_details: {
+        email: user?.email || 'unknown',
+        name: user?.displayName || 'anonymous name'
+      },
+    },
+  })
+   if(confirmError){
+     console.log(confirmError);
+   }
+   console.log(paymentIntent);
+ 
   };
 
   return (
@@ -60,7 +89,7 @@ const CheckoutForm = () => {
           },
         }}
       />
-      <button type="submit" className="btn btn-outline btn-secondary btn-sm mt-4"  disabled={!stripe}>
+      <button type="submit" className="btn btn-outline btn-secondary btn-sm mt-4"  disabled={!stripe || !clientSecret}>
         Pay
       </button>
     </form>
