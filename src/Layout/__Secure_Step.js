@@ -3,7 +3,8 @@
  * 2.only admin can see it 
  * 3 Do not allow to visit the link bu typing on the url
  * use AdminRoute will check that user will admin or not .
- * if not admin then redirect to any other page
+ * if not admin then redirect to any other page. you could sen logout user and send them to 
+ * login page.
  * --------------------------------
  * 
  * -----------To Send Data--------------

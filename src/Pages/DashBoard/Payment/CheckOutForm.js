@@ -1,48 +1,78 @@
+import React, { useState } from 'react';
+import {loadStripe} from '@stripe/stripe-js';
+
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React from 'react';
 
-const CheckOutForm = () => {
-    
-    const stripe = useStripe();
-    const elements = useElements();
+const CheckoutForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [cardError, setCardError] = useState('');
 
-    const handleSubmit =(event) =>{
-        event.preventDefault();
+  const handleSubmit = async (event) => {
+    // Block native form submission.
+    event.preventDefault();
 
-        if(!stripe || !elements){
-            return
-        }
-
-        const card = elements.getElement(elements);
-        if(card ===null){
-            return
-        }
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet. Make sure to disable
+      // form submission until Stripe.js has loaded.
+      return;
     }
 
-    
-    return (
-        <form onSubmit={handleSubmit}>
-            <CardElement
-                options={{
-                    style: {
-                        base: {
-                            fontSize: '16px',
-                            color: '#424770',
-                            '::placeholder': {
-                                color: '#aab7c4',
-                            },
-                        },
-                        invalid: {
-                            color: '#9e2146',
-                        },
-                    },
-                }}
-            />
-            <button type="submit" disabled={!stripe}>
-                Pay
-            </button>
-        </form>
-    );
+    // Get a reference to a mounted CardElement. Elements knows how
+    // to find your CardElement because there can only ever be one of
+    // each type of element.
+    const card = elements.getElement(CardElement);
+
+    if (card == null) {
+      return;
+    }
+
+    // Use your card Element with other Stripe.js APIs
+    const {error, paymentMethod} = await stripe.createPaymentMethod({
+      type: 'card',
+      card,
+    });
+
+    if (error) {
+      console.log('[error]', error);
+      setCardError(error.message);
+
+    } else {
+        setCardError('');
+        
+
+    }
+  };
+
+  return (
+   <>
+    <form onSubmit={handleSubmit}>
+      <CardElement
+        options={{
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#424770',
+              '::placeholder': {
+                color: '#aab7c4',
+              },
+            },
+            invalid: {
+              color: '#9e2146',
+            },
+          },
+        }}
+      />
+      <button className="btn btn-outline btn-secondary btn-sm mt-4" type="submit" disabled={!stripe}>
+        Pay
+      </button>
+    </form>
+    <p className='text-red-700'>{cardError}</p>
+   </>
+  );
 };
 
-export default CheckOutForm;
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+
+export default CheckoutForm;
