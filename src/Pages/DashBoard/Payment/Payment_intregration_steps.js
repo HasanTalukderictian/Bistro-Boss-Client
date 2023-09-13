@@ -11,6 +11,7 @@
  * 9.make sure you provide amounts in cents (multiply with 100)
  * use confrimpayment api with client sceret card info
  * 10. call payment intent api to get client secret info 
- *  
+ * 11. display confirm card error
+ * 12. display confirm card success 
  * 
  */
