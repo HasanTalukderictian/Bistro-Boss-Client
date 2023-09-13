@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
+//import './CheckOutForm.css';
 
-const CheckoutForm = ({ price }) => {
+const CheckoutForm = ({ cart, price }) => {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -19,15 +20,17 @@ const CheckoutForm = ({ price }) => {
 
     useEffect(() => {
 
-        console.log(price);
-
-        axiosSecure.post('/create-payment-intent', { price })
+        if(price >0 ){
+            axiosSecure.post('/create-payment-intent', { price })
             .then(res => {
                 console.log(res.data.clientSecret);
                 setClientSceret(res.data.clientSecret);
             })
+        }
 
-    }, [])
+        
+
+    }, [price, axiosSecure])
 
     const handleSubmit = async (event) => {
 
@@ -46,7 +49,7 @@ const CheckoutForm = ({ price }) => {
         }
 
         // Use your card Element with other Stripe.js APIs
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        const { error } = await stripe.createPaymentMethod({
             type: 'card',
             card,
         });
@@ -83,7 +86,26 @@ const CheckoutForm = ({ price }) => {
             if(paymentIntent.status === 'succeeded'){
 
                 setTransactionId(paymentIntent.id);
-            // TO DO next steps 
+
+            // save information to the server 
+            const payment  = {
+                email: user?.email,
+                transactionId: paymentIntent.id,
+                price,
+                date: new Date(),
+                quantity: cart.length,
+                status:"Service Pending",
+                cartItems: cart.map(item => item._id),
+                menuItems: cart.map(item => item.menuItemId),
+                itemNames: cart.map(item => item.name), 
+            }
+            axiosSecure.post('/payments', payment)
+            .then(res => {
+                console.log(res.data);
+                if(res.data.InsertResult.insertedId){
+                    // dusplay confirm
+                }
+            })
 
 
             }
