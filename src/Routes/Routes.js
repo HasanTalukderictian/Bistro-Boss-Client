@@ -18,6 +18,8 @@ import AddItem from "../Pages/DashBoard/AddItem/AddItem";
 import AdminRoute from "./AdminRoutes";
 import ManageItems from "../Pages/DashBoard/ManageItems/ManageItems";
 import Payment from "../Pages/DashBoard/Payment/Payment";
+import UserHome from "../Pages/DashBoard/UserHome/UserHome";
+import AdminHome from "../Pages/DashBoard/AdminHome/AdminHome";
   
   
   
@@ -58,6 +60,11 @@ import Payment from "../Pages/DashBoard/Payment/Payment";
       element:<PrivateRoutes><DashBoard></DashBoard></PrivateRoutes>,
       children: [
         {
+          path:'userhome',
+          element:<UserHome></UserHome>
+        },
+
+        {
           path:'mycart',
           element:<MyCart></MyCart>
         },
@@ -67,6 +74,10 @@ import Payment from "../Pages/DashBoard/Payment/Payment";
           element:<Payment></Payment>
         },
         // admin routes,
+        {
+          path:'adminhome',
+          element:<AdminRoute><AdminHome></AdminHome></AdminRoute>
+        },
         {
           path:'allusers',
           element:<AdminRoute><AllUsers></AllUsers></AdminRoute>
